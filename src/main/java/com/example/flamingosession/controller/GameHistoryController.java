@@ -1,7 +1,6 @@
 package com.example.flamingosession.controller;
 
 import com.example.flamingosession.client.dto.GameStateResponse;
-import com.example.flamingosession.controller.dto.GameStateData;
 import com.example.flamingosession.servise.SessionServise;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +16,7 @@ public class GameHistoryController {
     }
 
     @GetMapping("/sessions/{sessionId}")
-    public GameStateResponse getGameState (@PathVariable String sessionId){
+    public GameStateResponse getGameState(@PathVariable String sessionId) {
         return new GameStateResponse(sessionServise.getGameSessionState(sessionId));
     }
 }

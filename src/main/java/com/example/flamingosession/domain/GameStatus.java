@@ -8,16 +8,7 @@ public enum GameStatus {
     DRAW,
     FAILURE;
 
-    public int intCode(){
-        if(this==X_TURN){
-            return 1;
-        }
-         if(this==O_TURN){
-             return 2;
-        }
-         return 0;
-    }
-    public boolean completed(){
+    public boolean completed() {
         return this != X_TURN && this != O_TURN;
     }
 }

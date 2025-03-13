@@ -9,7 +9,4 @@ class FlamingoSessionApplicationTests {
     @Test
     void contextLoads() {
     }
-
-
-
 }

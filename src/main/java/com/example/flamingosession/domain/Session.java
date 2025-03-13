@@ -6,10 +6,10 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class Session {
-    String sessionId;
-    int[] moves;
-    int movesCounter;
-    GameStatus gameStatus;
+    private final String sessionId;
+    private final int[] moves;
+    private int movesCounter;
+    private GameStatus gameStatus;
 
     public Session(UUID id) {
         this.sessionId = id.toString();
@@ -20,7 +20,7 @@ public class Session {
     public void addMove(Move move) {
         moves[movesCounter] = move.place();
         movesCounter++;
-        gameStatus=gameStatus==GameStatus.X_TURN?GameStatus.O_TURN:GameStatus.X_TURN;
+        gameStatus = gameStatus == GameStatus.X_TURN ? GameStatus.O_TURN : GameStatus.X_TURN;
     }
 
     public String getSessionId() {
@@ -37,7 +37,6 @@ public class Session {
             board[moves[i]] = i % 2 + 1;
         }
         return board;
-
     }
 
     public int[] getMoves() {

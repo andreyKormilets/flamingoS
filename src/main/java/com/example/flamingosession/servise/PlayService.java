@@ -8,7 +8,7 @@ import com.example.flamingosession.domain.Session;
 import com.example.flamingosession.repo.SessionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -17,8 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
-
-@Component
+@Service
 public class PlayService {
 
     private static final Logger log = LoggerFactory.getLogger(PlayService.class);
@@ -28,16 +27,16 @@ public class PlayService {
 
     private final UiClient uiClient;
 
-    Random random;
+    private final Random random;
 
-    ScheduledExecutorService scheduler;
+    private final ScheduledExecutorService scheduler;
 
     public PlayService(SessionRepository sessionRepository, GameServiceClient client, UiClient uiClient) {
         this.sessionRepository = sessionRepository;
         this.client = client;
         this.uiClient = uiClient;
-        this.random=new Random();
-        this.scheduler= Executors.newScheduledThreadPool(2);
+        this.random = new Random();
+        this.scheduler = Executors.newScheduledThreadPool(2);
     }
 
     public void simulateGame(String sessionId) {
@@ -48,13 +47,13 @@ public class PlayService {
         log.info(sessionId);
         Session session = sessionRepository.getSession(sessionId);
         Move move = generateMove(session);
-        log.info("move"+move.OX()+move.place());
+        log.info("move" + move.OX() + move.place());
         GameStatus gameStatus = client.makeMove(move);
-        log.info("gameStatus"+gameStatus);
+        log.info("gameStatus" + gameStatus);
         session.addMove(move);
         uiClient.updateUiMove(move);
         if (gameStatus.completed()) {
-            uiClient.updateResult(sessionId,gameStatus);
+            uiClient.updateResult(sessionId, gameStatus);
             log.info("remove");
             sessionRepository.removeCompletedGameSession(sessionId);
         } else {
@@ -70,7 +69,7 @@ public class PlayService {
     private Move generateMove(Session session) {
         int randomFreePlace = random.nextInt(10);
         int[] places = session.getBoard();
-        log.info("board"+ Arrays.toString(places));
+        log.info("board" + Arrays.toString(places));
         int j = 0;
         for (int i = 0; i <= randomFreePlace; i++) {
             j++;
@@ -78,7 +77,7 @@ public class PlayService {
                 j++;
             }
         }
-        log.info("place "+ j% 9 );
-        return new Move(j% 9, session, session.getGameStatus());
+        log.info("place " + j % 9);
+        return new Move(j % 9, session, session.getGameStatus());
     }
 }

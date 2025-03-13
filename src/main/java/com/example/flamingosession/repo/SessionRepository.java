@@ -9,14 +9,17 @@ import java.util.Map;
 
 @Component
 public class SessionRepository {
-    Map<String, Session> allActiveSessions =new HashMap<>();
-    public Session getSession(String sessionId){
-        return allActiveSessions .get(sessionId);
+    Map<String, Session> allActiveSessions = new HashMap<>();
+
+    public Session getSession(String sessionId) {
+        return allActiveSessions.get(sessionId);
     }
-    public void putNewSession(Session session){
-        allActiveSessions.put(session.getSessionId(),session);
+
+    public void putNewSession(Session session) {
+        allActiveSessions.put(session.getSessionId(), session);
     }
-    public void removeCompletedGameSession(String sessionId){
+
+    public void removeCompletedGameSession(String sessionId) {
         allActiveSessions.remove(sessionId);
     }
 }

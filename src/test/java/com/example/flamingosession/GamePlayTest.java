@@ -1,20 +1,21 @@
 package com.example.flamingosession;
 
 import com.example.flamingosession.client.dto.GameStateResponse;
-import com.example.flamingosession.controller.dto.GameStateData;
-import org.junit.jupiter.api.*;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import com.github.tomakehurst.wiremock.WireMockServer;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GamePlayTest {
@@ -30,9 +31,10 @@ class GamePlayTest {
     }
 
     @AfterEach
-      void tearDown() {
+    void tearDown() {
         wireMockServer.stop();
     }
+
     @Test
     public void getSessionAndSimulate() throws InterruptedException {
         setupStartStub();
@@ -51,10 +53,10 @@ class GamePlayTest {
         long movesCount = Arrays.stream(gameStateResponse.getBody().data().board())
                 .filter(a -> a != 0)
                 .count();
-        assertEquals(2 , movesCount);
+        assertEquals(2, movesCount);
     }
 
-    private void setupStartStub(){
+    private void setupStartStub() {
         wireMockServer.stubFor(post(urlMatching("/games/.*/start"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
@@ -65,7 +67,8 @@ class GamePlayTest {
                                 """)
                         .withStatus(200)));
     }
-    private void setupStubO(){
+
+    private void setupStubO() {
         wireMockServer.stubFor(post(urlMatching("/games/.*/move"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
@@ -76,7 +79,8 @@ class GamePlayTest {
                                 """)
                         .withStatus(200)));
     }
-    private void setupStubX(){
+
+    private void setupStubX() {
         wireMockServer.stubFor(post(urlMatching("/games/.*/move"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")

@@ -14,20 +14,23 @@ import static com.example.flamingosession.client.ClientConfiguration.GAME_SERVIC
 @Component
 public class GameServiceClient {
     private final RestTemplate restTemplate = new RestTemplate();
-    public void startGame(String sessionId){
-        String url = GAME_SERVICE_URL+"/games/"+sessionId+"/start";
-        restTemplate.postForEntity(url,sessionId, MoveResponse.class);
+
+    public void startGame(String sessionId) {
+        String url = GAME_SERVICE_URL + "/games/" + sessionId + "/start";
+        restTemplate.postForEntity(url, sessionId, MoveResponse.class);
     }
-    public GameStateData getGameState(String sessionId){
-        String url = GAME_SERVICE_URL+"/games/"+sessionId;
+
+    public GameStateData getGameState(String sessionId) {
+        String url = GAME_SERVICE_URL + "/games/" + sessionId;
         return restTemplate.getForObject(url, GameStateResponse.class).data();
 
     }
-    public GameStatus makeMove(Move move){
-        String url  = GAME_SERVICE_URL+"/games/" +
+
+    public GameStatus makeMove(Move move) {
+        String url = GAME_SERVICE_URL + "/games/" +
                 move.session().getSessionId() +
                 "/move";
         MoveRequest request = new MoveRequest(move.OX(), move.place());
-        return  restTemplate.postForEntity(url,request, MoveResponse.class).getBody().moveStatus();
+        return restTemplate.postForEntity(url, request, MoveResponse.class).getBody().moveStatus();
     }
 }
